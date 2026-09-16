@@ -16,16 +16,29 @@
     display: flex;
     flex-direction: column;
     padding: clamp(20px, 3vw, 48px);
-    gap: clamp(16px, 2.4vw, 32px);
+    gap: clamp(20px, 3vh, 40px);
   }
 
-  header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
   header .eyebrow { color: var(--accent); }
   header h1 {
-    font-size: clamp(1.8rem, 3.6vw, 3.1rem);
-    line-height: 1.02;
-    max-width: 20ch;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 4.6vw, 4.1rem);
+    line-height: 1.05;
+    max-width: 22ch;
+    margin-top: 10px;
   }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+    color: var(--text-on-ink-dim);
+    white-space: nowrap;
+  }
+  .logo svg { flex-shrink: 0; }
 
   main {
     flex: 1;
@@ -49,7 +62,6 @@
   }
   #qrcode { background: var(--text-on-ink); padding: 12px; border-radius: 10px; line-height: 0; }
   #qrcode img { display: block; }
-  .painel-qr .call { font-size: clamp(1rem, 1.6vw, 1.3rem); font-weight: 600; max-width: 22ch; }
   .contador {
     display: flex;
     flex-direction: column;
@@ -60,7 +72,21 @@
   .contador .count { font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--accent); font-weight: 500; }
   .contador .eyebrow { color: var(--text-on-ink-dim); }
 
+  .coluna-ranking { display: flex; flex-direction: column; gap: clamp(14px, 2vh, 24px); min-height: 0; }
+  .status-row { display: flex; justify-content: flex-end; }
+  #status-live { display: inline-flex; align-items: center; gap: 6px; }
+  #status-live::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-on-ink-dim);
+  }
+  #status-live.ao-vivo { color: var(--accent); }
+  #status-live.ao-vivo::before { background: var(--accent); }
+
   .ranking {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -105,25 +131,19 @@
     color: var(--text-on-ink-dim);
   }
   .linha.lider .valor { color: var(--accent); }
-
-  footer { display: flex; justify-content: space-between; align-items: center; color: var(--text-on-ink-dim); }
-  #status-live { display: inline-flex; align-items: center; gap: 6px; }
-  #status-live::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--text-on-ink-dim);
-  }
-  #status-live.ao-vivo { color: var(--accent); }
-  #status-live.ao-vivo::before { background: var(--accent); }
 </style>
 </head>
 <body>
   <header>
     <div>
       <span class="eyebrow">Pós iFood Move · 2ª edição</span>
-      <h1>O que os gestores aqui estão enfrentando?</h1>
+      <h1>Qual é o maior desafio do seu restaurante hoje?</h1>
+    </div>
+    <div class="logo">
+      <svg width="22" height="26" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2H20V6.5L11 24L2 6.5V2Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      </svg>
+      tastto
     </div>
   </header>
 
@@ -131,20 +151,17 @@
     <div class="painel-qr">
       <span class="eyebrow">Aponte a câmera</span>
       <div id="qrcode"></div>
-      <p class="call">Qual é o maior desafio do seu restaurante hoje?</p>
       <div class="contador">
         <span class="count mono" id="total-respostas">0</span>
         <span class="eyebrow">respostas</span>
       </div>
     </div>
 
-    <div class="ranking" id="ranking"></div>
+    <div class="coluna-ranking">
+      <div class="status-row"><span class="eyebrow" id="status-live">conectando…</span></div>
+      <div class="ranking" id="ranking"></div>
+    </div>
   </main>
-
-  <footer>
-    <span class="eyebrow">Tastto</span>
-    <span class="eyebrow" id="status-live">conectando…</span>
-  </footer>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js"></script>
