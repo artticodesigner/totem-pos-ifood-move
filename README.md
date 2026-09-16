@@ -5,6 +5,13 @@ Publicado como repositório próprio (`artticodesigner/totem-pos-ifood-move`), s
 workspace — mesmo padrão do `identidade-visual/`. Pra atualizar depois de editar aqui, copie os
 arquivos pro repositório publicado e dê push (ou peça pro Claude fazer isso de novo).
 
+**Cache:** `styles.css`, `categorias.js`, `totem.js` e `vote.js` são carregados com `?v=4` no
+final da URL (em `totem.html`/`vote.html`). Isso existe só pra forçar o navegador/GitHub a pegar
+a versão nova depois de um update — sem isso, o arquivo pode ficar "grudado" em cache com o
+mesmo nome e conteúdo antigo. **Toda vez que algum desses 4 arquivos for editado, sobe o número
+da versão** (`?v=5`, `?v=6`...) nos dois HTMLs, senão a mudança pode não aparecer pro usuário
+mesmo já publicada.
+
 Ativação de totem: os participantes escaneiam um QR code, respondem no celular qual é o
 maior desafio do restaurante deles, e o resultado aparece ao vivo na tela do totem.
 
