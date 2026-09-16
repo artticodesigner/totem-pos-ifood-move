@@ -6,7 +6,7 @@
 <title>Pós iFood Move — Totem</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
   html, body { height: 100%; overflow: hidden; }
@@ -37,7 +37,8 @@
 
   .painel-qr {
     background: var(--ink-2);
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
     padding: clamp(18px, 2.2vw, 32px);
     display: flex;
     flex-direction: column;
@@ -46,7 +47,7 @@
     gap: 16px;
     text-align: center;
   }
-  #qrcode { background: var(--text-on-ink); padding: 12px; border-radius: 6px; line-height: 0; }
+  #qrcode { background: var(--text-on-ink); padding: 12px; border-radius: 10px; line-height: 0; }
   #qrcode img { display: block; }
   .painel-qr .call { font-size: clamp(1rem, 1.6vw, 1.3rem); font-weight: 600; max-width: 22ch; }
   .contador {
@@ -72,8 +73,8 @@
     gap: 16px;
   }
   .linha .rotulo {
-    font-family: 'Big Shoulders Display', sans-serif;
-    font-weight: 700;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
     text-transform: uppercase;
     font-size: clamp(1rem, 1.6vw, 1.4rem);
     color: var(--text-on-ink-dim);
@@ -83,28 +84,39 @@
   .trilha {
     height: clamp(20px, 3.4vh, 34px);
     background: var(--line-on-ink);
-    border-radius: 4px;
+    border-radius: 99px;
     overflow: hidden;
   }
   .barra {
     height: 100%;
     width: 0%;
-    background: var(--text-on-ink-dim);
-    border-radius: 4px;
+    background: var(--line-on-ink);
+    border-radius: 99px;
     transition: width .7s cubic-bezier(.2,.8,.2,1), background .3s ease;
   }
-  .linha.lider .barra { background: var(--accent); }
+  .linha.lider .barra { background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
   .linha .valor {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
     font-variant-numeric: tabular-nums;
     font-size: clamp(1rem, 1.6vw, 1.4rem);
-    min-width: 2.4em;
+    min-width: 1.6em;
     text-align: right;
     color: var(--text-on-ink-dim);
   }
   .linha.lider .valor { color: var(--accent); }
 
-  footer { display: flex; justify-content: space-between; color: var(--text-on-ink-dim); }
+  footer { display: flex; justify-content: space-between; align-items: center; color: var(--text-on-ink-dim); }
+  #status-live { display: inline-flex; align-items: center; gap: 6px; }
+  #status-live::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-on-ink-dim);
+  }
+  #status-live.ao-vivo { color: var(--accent); }
+  #status-live.ao-vivo::before { background: var(--accent); }
 </style>
 </head>
 <body>

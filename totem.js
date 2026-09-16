@@ -21,8 +21,8 @@
       text: urlVoto,
       width: 168,
       height: 168,
-      colorDark: '#15120d',
-      colorLight: '#f5f1e6'
+      colorDark: '#150f28',
+      colorLight: '#ffffff'
     });
   }
 
@@ -53,14 +53,14 @@
 
     var idsOrdenados = CATEGORIAS.map(function (c) { return c.id; })
       .sort(function (a, b) { return contagem[b] - contagem[a]; });
-    var liderId = total > 0 ? idsOrdenados[0] : null;
 
     CATEGORIAS.forEach(function (cat) {
       var el = linhas[cat.id];
       var pct = max > 0 ? (contagem[cat.id] / max) * 100 : 0;
       el.barra.style.width = pct + '%';
       el.valor.textContent = contagem[cat.id];
-      el.wrap.classList.toggle('lider', cat.id === liderId && contagem[cat.id] > 0);
+      // Empate no topo também conta como líder — todo mundo empatado fica em destaque.
+      el.wrap.classList.toggle('lider', max > 0 && contagem[cat.id] === max);
       el.wrap.style.order = idsOrdenados.indexOf(cat.id);
     });
 
@@ -95,7 +95,9 @@
         }
       })
       .subscribe(function (status) {
-        statusEl.textContent = status === 'SUBSCRIBED' ? 'ao vivo' : status.toLowerCase();
+        var aoVivo = status === 'SUBSCRIBED';
+        statusEl.textContent = aoVivo ? 'ao vivo' : status.toLowerCase();
+        statusEl.classList.toggle('ao-vivo', aoVivo);
       });
   }
 

@@ -1,5 +1,10 @@
 # Totem — Pós iFood Move (2ª edição)
 
+**No ar em:** https://artticodesigner.github.io/totem-pos-ifood-move/
+Publicado como repositório próprio (`artticodesigner/totem-pos-ifood-move`), separado deste
+workspace — mesmo padrão do `identidade-visual/`. Pra atualizar depois de editar aqui, copie os
+arquivos pro repositório publicado e dê push (ou peça pro Claude fazer isso de novo).
+
 Ativação de totem: os participantes escaneiam um QR code, respondem no celular qual é o
 maior desafio do restaurante deles, e o resultado aparece ao vivo na tela do totem.
 
