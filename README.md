@@ -8,17 +8,17 @@ arquivos pro repositório publicado e dê push (ou peça pro Claude fazer isso d
 Ativação de totem: os participantes escaneiam um QR code, respondem no celular qual é o
 maior desafio do restaurante deles, e o resultado aparece ao vivo na tela do totem.
 
-Duas páginas, mesmo projeto Supabase do `identidade-visual/` (só tabelas novas):
+Duas páginas, mesmo projeto Supabase do `identidade-visual/` (só uma tabela nova):
 
 - **`totem.html`** — vai na tela grande. Mostra o QR code e o ranking ao vivo.
 - **`vote.html`** — é pra onde o QR code aponta. Abre no celular do participante.
 
 ## Configurar (uma vez só)
 
-1. **Criar as tabelas no Supabase**
+1. **Criar a tabela no Supabase**
    - No SQL Editor do projeto (o mesmo do `identidade-visual/`), cole o conteúdo de
      [`supabase-setup.sql`](supabase-setup.sql) e rode.
-   - Isso cria `pos_ifood_move_votos` (com tempo real ligado) e `pos_ifood_move_contatos`.
+   - Isso cria `pos_ifood_move_votos`, com tempo real ligado.
 
 2. **Publicar as páginas**
    - Suba essa pasta pro GitHub Pages (mesmo jeito que `identidade-visual/` foi publicado).
@@ -28,8 +28,6 @@ Duas páginas, mesmo projeto Supabase do `identidade-visual/` (só tabelas novas
 3. **Testar antes do evento**
    - Abra `totem.html` numa tela (ou notebook conectado na TV) e `vote.html` no seu celular.
    - Vote e confira se a barra da categoria sobe no totem em poucos segundos.
-   - Teste também o fluxo "Quer o diagnóstico Tastto" → preenche nome/WhatsApp → confirma que
-     apareceu uma linha nova em `pos_ifood_move_contatos` no Table Editor do Supabase.
 
 ## No dia do evento
 
@@ -39,12 +37,6 @@ Duas páginas, mesmo projeto Supabase do `identidade-visual/` (só tabelas novas
 - Cada celular só vota uma vez (guardado no navegador via `localStorage`) — se o participante
   limpar os dados do navegador ou usar outro aparelho, consegue votar de novo. Não há bloqueio
   no banco, é só fricção leve pra evitar voto duplicado por engano.
-
-## Ver os leads depois
-
-Os contatos que pediram o diagnóstico ficam em `pos_ifood_move_contatos`, visível só no
-Table Editor do Supabase (logado como dono do projeto) — não tem policy de leitura pública,
-então ninguém acessa essa lista pela chave pública do site.
 
 ## Categorias
 

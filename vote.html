@@ -83,44 +83,6 @@
   .barra-preenchida { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent)); border-radius: 99px; width: 0%; transition: width .6s ease; }
   .resultado-meta { display: flex; justify-content: space-between; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.82rem; color: var(--text-on-ink-dim); }
 
-  .cta-diagnostico {
-    border: 1.5px solid var(--ink);
-    background: transparent;
-    color: var(--text-on-paper);
-    border-radius: 4px;
-    padding: 16px;
-    font-weight: 600;
-    font-size: 0.98rem;
-    text-align: center;
-  }
-  .cta-diagnostico:active { background: var(--paper-2); }
-
-  form#form-contato { display: flex; flex-direction: column; gap: 10px; }
-  form#form-contato input {
-    font-family: inherit;
-    font-size: 1rem;
-    padding: 14px;
-    border: 1px solid var(--line-on-paper);
-    border-radius: 4px;
-    background: #fff;
-    color: var(--text-on-paper);
-  }
-  form#form-contato button {
-    background: var(--accent-strong);
-    color: var(--ink);
-    border: none;
-    border-radius: 4px;
-    padding: 15px;
-    font-weight: 800;
-    font-family: 'Manrope', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-size: 1.05rem;
-  }
-
-  .obrigado { display: flex; flex-direction: column; gap: 8px; }
-  .obrigado .display { color: var(--accent-strong); font-size: 1.6rem; }
-
   footer { margin-top: 28px; text-align: center; }
   footer .eyebrow { color: var(--text-on-paper-dim); }
 </style>
@@ -147,21 +109,6 @@
         <span id="resultado-pct">0%</span>
         <span id="resultado-total">0 respostas</span>
       </div>
-    </div>
-
-    <div id="bloco-cta">
-      <button class="cta-diagnostico" id="btn-diagnostico" type="button">Quer o diagnóstico Tastto pra esse desafio?</button>
-    </div>
-
-    <form id="form-contato" hidden>
-      <input type="text" id="input-nome" placeholder="Seu nome" autocomplete="name" required>
-      <input type="tel" id="input-whatsapp" placeholder="WhatsApp com DDD" autocomplete="tel" required>
-      <button type="submit">Quero o diagnóstico</button>
-    </form>
-
-    <div class="obrigado" id="bloco-obrigado" hidden>
-      <span class="display">Fechado.</span>
-      <p>A Tastto entra em contato depois do evento com o diagnóstico pra esse desafio.</p>
     </div>
   </div>
 

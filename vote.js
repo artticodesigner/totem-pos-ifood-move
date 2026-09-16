@@ -15,10 +15,6 @@
   var resultadoBarra = document.getElementById('resultado-barra');
   var resultadoPct = document.getElementById('resultado-pct');
   var resultadoTotal = document.getElementById('resultado-total');
-  var btnDiagnostico = document.getElementById('btn-diagnostico');
-  var blocoCta = document.getElementById('bloco-cta');
-  var formContato = document.getElementById('form-contato');
-  var blocoObrigado = document.getElementById('bloco-obrigado');
   var erroVoto = document.getElementById('erro-voto');
 
   function renderOpcoes() {
@@ -72,62 +68,30 @@
   async function mostrarResultado(categoriaId) {
     resultadoLabel.textContent = labelDe(categoriaId);
 
+    // O voto já foi registrado nesse ponto — uma falha aqui é só a estatística
+    // de %, então não pode travar a confirmação do voto pro participante.
     if (db) {
-      var todas = await db.from('pos_ifood_move_votos').select('categoria');
-      if (todas && todas.error) { console.error('Erro ao buscar votos:', todas.error); }
-      var linhas = (todas && todas.data) || [];
-      var total = linhas.length;
-      var doGrupo = linhas.filter(function (r) { return r.categoria === categoriaId; }).length;
-      var pct = total > 0 ? Math.round((doGrupo / total) * 100) : 100;
+      try {
+        var todas = await db.from('pos_ifood_move_votos').select('categoria');
+        if (todas && todas.error) { throw todas.error; }
+        var linhas = (todas && todas.data) || [];
+        var total = linhas.length;
+        var doGrupo = linhas.filter(function (r) { return r.categoria === categoriaId; }).length;
+        var pct = total > 0 ? Math.round((doGrupo / total) * 100) : 100;
 
-      resultadoPct.textContent = pct + '%';
-      resultadoTotal.textContent = total + (total === 1 ? ' resposta' : ' respostas');
-      requestAnimationFrame(function () { resultadoBarra.style.width = pct + '%'; });
+        resultadoPct.textContent = pct + '%';
+        resultadoTotal.textContent = total + (total === 1 ? ' resposta' : ' respostas');
+        requestAnimationFrame(function () { resultadoBarra.style.width = pct + '%'; });
+      } catch (e) {
+        console.error('Erro ao buscar votos:', e);
+        resultadoPct.textContent = '—';
+        resultadoTotal.textContent = 'voto registrado';
+      }
     }
 
     viewVote.hidden = true;
     viewResult.hidden = false;
   }
-
-  btnDiagnostico.addEventListener('click', function () {
-    blocoCta.hidden = true;
-    formContato.hidden = false;
-  });
-
-  formContato.addEventListener('submit', async function (ev) {
-    ev.preventDefault();
-    var nome = document.getElementById('input-nome').value.trim();
-    var whatsapp = document.getElementById('input-whatsapp').value.trim();
-    var categoriaId = (function () {
-      try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
-    })();
-
-    var btn = formContato.querySelector('button');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-
-    var deuErro = false;
-    if (db) {
-      var respContato = await db.from('pos_ifood_move_contatos').insert({
-        categoria: categoriaId,
-        nome: nome,
-        whatsapp: whatsapp
-      });
-      if (respContato && respContato.error) {
-        console.error('Erro ao salvar contato:', respContato.error);
-        deuErro = true;
-      }
-    }
-
-    if (deuErro) {
-      btn.disabled = false;
-      btn.textContent = 'Tentar de novo';
-      return;
-    }
-
-    formContato.hidden = true;
-    blocoObrigado.hidden = false;
-  });
 
   renderOpcoes();
 
