@@ -68,9 +68,17 @@
     totalEl.textContent = total;
   }
 
+  var ultimaRequisicao = 0;
+
   async function carregarTudo() {
     if (!db) { statusEl.textContent = 'supabase indisponível'; return; }
+    var minhaRequisicao = ++ultimaRequisicao;
     var resp = await db.from('pos_ifood_move_votos').select('categoria');
+
+    // Uma resposta mais antiga pode chegar depois de uma mais nova (rede do evento
+    // é instável) — se não for mais a última pedida, ignora pra não voltar no tempo.
+    if (minhaRequisicao !== ultimaRequisicao) { return; }
+
     if (resp && resp.error) {
       console.error('Erro ao buscar votos:', resp.error);
       statusEl.textContent = 'erro: ' + resp.error.message;
@@ -88,12 +96,10 @@
   function assinarTempoReal() {
     if (!db) { return; }
     db.channel('pos-ifood-move-votos')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'pos_ifood_move_votos' }, function (payload) {
-        var categoriaId = payload.new && payload.new.categoria;
-        if (categoriaId && contagem.hasOwnProperty(categoriaId)) {
-          contagem[categoriaId]++;
-          renderizar();
-        }
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'pos_ifood_move_votos' }, function () {
+        // Refaz a contagem inteira a partir do banco em vez de incrementar localmente —
+        // incrementar podia divergir do banco se o resync periódico resolvesse fora de ordem.
+        carregarTudo();
       })
       .subscribe(function (status) {
         var aoVivo = status === 'SUBSCRIBED';
