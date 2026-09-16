@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Pós iFood Move — Responder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body {
+    background: var(--paper);
+    color: var(--text-on-paper);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px calc(28px + env(safe-area-inset-bottom));
+  }
+  .wrap {
+    max-width: 460px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 28px;
+  }
+  header .eyebrow { color: var(--accent-strong); }
+  header h1 { font-size: clamp(1.6rem, 7vw, 2rem); line-height: 1.05; }
+
+  #view-vote, #view-result { display: flex; flex-direction: column; gap: 22px; }
+  [hidden] { display: none !important; }
+
+  .pergunta { font-size: clamp(1.1rem, 5vw, 1.35rem); font-weight: 600; line-height: 1.3; }
+
+  .opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .opcao {
+    background: #fff;
+    border: 1px solid var(--line-on-paper);
+    border-radius: 4px;
+    padding: 18px 14px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 72px;
+    justify-content: center;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .opcao:active { transform: scale(0.97); background: var(--paper-2); }
+  .opcao .num { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text-on-paper-dim); }
+  .opcao .label { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.15rem; }
+  .opcao:disabled { opacity: 0.5; }
+
+  .erro {
+    background: #fbe6e0;
+    border: 1px solid #c94a2b;
+    color: #8a2f1a;
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .resultado-card {
+    background: var(--ink);
+    color: var(--text-on-ink);
+    border-radius: 6px;
+    padding: 26px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .resultado-card .eyebrow { color: var(--accent); }
+  .resultado-card h2 { font-size: clamp(1.5rem, 8vw, 2.1rem); }
+  .barra-fundo { height: 10px; border-radius: 99px; background: var(--line-on-ink); overflow: hidden; }
+  .barra-preenchida { height: 100%; background: var(--accent); border-radius: 99px; width: 0%; transition: width .6s ease; }
+  .resultado-meta { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--text-on-ink-dim); }
+
+  .cta-diagnostico {
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--text-on-paper);
+    border-radius: 4px;
+    padding: 16px;
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-align: center;
+  }
+  .cta-diagnostico:active { background: var(--paper-2); }
+
+  form#form-contato { display: flex; flex-direction: column; gap: 10px; }
+  form#form-contato input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 14px;
+    border: 1px solid var(--line-on-paper);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text-on-paper);
+  }
+  form#form-contato button {
+    background: var(--accent-strong);
+    color: var(--ink);
+    border: none;
+    border-radius: 4px;
+    padding: 15px;
+    font-weight: 700;
+    font-family: 'Big Shoulders Display', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 1.05rem;
+  }
+
+  .obrigado { display: flex; flex-direction: column; gap: 8px; }
+  .obrigado .display { color: var(--accent-strong); font-size: 1.6rem; }
+
+  footer { margin-top: 28px; text-align: center; }
+  footer .eyebrow { color: var(--text-on-paper-dim); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Pós iFood Move · 2ª edição</span>
+    <h1>O que os gestores aqui estão enfrentando?</h1>
+  </header>
+
+  <div id="view-vote">
+    <p class="pergunta">Qual é hoje o maior desafio do seu restaurante?</p>
+    <div class="opcoes" id="opcoes"></div>
+    <p class="erro" id="erro-voto" hidden></p>
+  </div>
+
+  <div id="view-result" hidden>
+    <div class="resultado-card">
+      <span class="eyebrow">Sua resposta</span>
+      <h2 id="resultado-label" class="display">—</h2>
+      <div class="barra-fundo"><div class="barra-preenchida" id="resultado-barra"></div></div>
+      <div class="resultado-meta">
+        <span id="resultado-pct">0%</span>
+        <span id="resultado-total">0 respostas</span>
+      </div>
+    </div>
+
+    <div id="bloco-cta">
+      <button class="cta-diagnostico" id="btn-diagnostico" type="button">Quer o diagnóstico Tastto pra esse desafio?</button>
+    </div>
+
+    <form id="form-contato" hidden>
+      <input type="text" id="input-nome" placeholder="Seu nome" autocomplete="name" required>
+      <input type="tel" id="input-whatsapp" placeholder="WhatsApp com DDD" autocomplete="tel" required>
+      <button type="submit">Quero o diagnóstico</button>
+    </form>
+
+    <div class="obrigado" id="bloco-obrigado" hidden>
+      <span class="display">Fechado.</span>
+      <p>A Tastto entra em contato depois do evento com o diagnóstico pra esse desafio.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span class="eyebrow">Tastto</span>
+  </footer>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="categorias.js"></script>
+<script src="vote.js"></script>
+</body>
+</html>

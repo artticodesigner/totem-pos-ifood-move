@@ -1,0 +1,66 @@
+/* Pós iFood Move — ativação de totem
+   Paleta: tinta quente (expositor de cozinha) + âmbar (lâmpada de passe).
+   Display: Big Shoulders Display (ficha de pedido, industrial).
+   Corpo/dados: IBM Plex Sans / IBM Plex Mono (números tabulares — a Tastto fala de dados). */
+
+:root {
+  --ink: #15120d;
+  --ink-2: #211c14;
+  --paper: #f2eee3;
+  --paper-2: #e8e2d2;
+  --text-on-ink: #f5f1e6;
+  --text-on-ink-dim: #c9c0ac;
+  --text-on-paper: #1e1a12;
+  --text-on-paper-dim: #6b6353;
+  --accent: #e8a33d;
+  --accent-strong: #d97e1d;
+  --line-on-ink: rgba(245, 241, 230, 0.16);
+  --line-on-paper: rgba(30, 26, 18, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.mono, .count {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
