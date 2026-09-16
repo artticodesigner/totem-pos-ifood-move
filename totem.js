@@ -56,7 +56,8 @@
 
     CATEGORIAS.forEach(function (cat) {
       var el = linhas[cat.id];
-      var pct = max > 0 ? (contagem[cat.id] / max) * 100 : 0;
+      // Barra representa a fatia do total de respostas, não a posição relativa ao líder.
+      var pct = total > 0 ? (contagem[cat.id] / total) * 100 : 0;
       el.barra.style.width = pct + '%';
       el.valor.textContent = contagem[cat.id];
       // Empate no topo também conta como líder — todo mundo empatado fica em destaque.
